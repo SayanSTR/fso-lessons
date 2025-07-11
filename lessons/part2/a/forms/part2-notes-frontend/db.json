@@ -1,0 +1,34 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "content": "HTML is easy",
+      "important": true
+    },
+    {
+      "id": "2",
+      "content": "Browser can execute only JavaScript",
+      "important": false
+    },
+    {
+      "id": "3",
+      "content": "GET and POST are the most important methods of HTTP protocol",
+      "important": false
+    },
+    {
+      "id": "63b6",
+      "content": "Test note",
+      "important": true
+    },
+    {
+      "id": "0f08",
+      "content": "We can save or fetch data to server using axios",
+      "important": false
+    },
+    {
+      "id": "53f1",
+      "content": "Testing",
+      "important": false
+    }
+  ]
+}
