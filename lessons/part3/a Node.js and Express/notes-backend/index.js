@@ -1,16 +1,23 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
 app.disable('etag')
+
+const corsOptions = {
+	origin: 'http://localhost:5173'
+}
+
+app.use(cors(corsOptions))
 // The Express json-parser 
-app.use(express.json())
+app.use(express.json(corsOptions))
 
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
+	console.log('Method:', request.method)
+	console.log('Path:  ', request.path)
+	console.log('Body:  ', request.body)
+	console.log('---')
+	next()
 }
 
 app.use(requestLogger)
@@ -39,9 +46,9 @@ let notes = [
 ]
 
 const generateId = () => {
-	const maxId = notes.length > 0 
-	? Math.max(...notes.map(n => Number(n.id)))
-	: 0
+	const maxId = notes.length > 0
+		? Math.max(...notes.map(n => Number(n.id)))
+		: 0
 	return String(maxId + 1)
 }
 
@@ -49,11 +56,11 @@ app.get('/', (request, response) => {
 	response.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/notes/:id', (request, response) =>{
+app.get('/api/notes/:id', (request, response) => {
 	const id = request.params.id
 	const note = notes.find(note => note.id === id)
-	if(note){
-	response.json(note)
+	if (note) {
+		response.json(note)
 	} else {
 		response.statusMessage = "Sorry! Couldn't find you note :-/ "
 		response.status(404).end()
@@ -64,17 +71,17 @@ app.get('/api/notes', (request, response) => {
 	response.json(notes)
 })
 
-app.delete('/api/notes/:id', (request, response) =>{
+app.delete('/api/notes/:id', (request, response) => {
 	const id = request.params.id
 	notes = notes.filter(note => note.id !== id)
-	
+
 	response.status(204).end()
 })
 
 app.post('/api/notes', (request, response) => {
 	const body = request.body
 
-	if(!body.content) {
+	if (!body.content) {
 		return response.status(400).json({
 			error: 'Content missing!'
 		})
@@ -92,7 +99,7 @@ app.post('/api/notes', (request, response) => {
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+	response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
